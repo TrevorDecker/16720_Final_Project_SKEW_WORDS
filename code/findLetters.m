@@ -1,9 +1,12 @@
-function [ C ] = findLetters( imagen )
+function [ B ] = findLetters( imagen )
 %findLetters returns the top left corner of the letter, the bounding box of each letter, and the letter it was most likely associated with.
 %  Inputs: Im - image
-%  Outputs: C - 4point x n vector with the bounding box surrounding each letter 
-
+%   Outputs: B - nx1 structure where the B.BoundingBox represents bounding box (x,y,w,h),
+%               B.Area represents the area of each bounding box
+%               B.Centroid represents the centroid of each bounding box
 figure; imshow(imagen);
+
+%% TODO: Segment image based on gradient or based on cells or both (improve segmentation)
 %% Convert to gray scale
 if size(imagen,3)==3 %RGB image
     imagen=rgb2gray(imagen);
@@ -21,7 +24,7 @@ title('INPUT IMAGE WITHOUT NOISE')
 %% Label connected components
 [L Ne]=bwlabel(imagen);
 %% Measure properties of image regions
-propied=regionprops(L,'BoundingBox');
+propied=regionprops(L,'BoundingBox','Area','Orientation','Centroid');
 hold on
 %% Plot Bounding Box
 for n=1:size(propied,1)
@@ -38,6 +41,6 @@ for n=1:Ne
     pause(0.5)
 end
 
-C = propied.BoundingBox;
+B =propied;
 end
 
