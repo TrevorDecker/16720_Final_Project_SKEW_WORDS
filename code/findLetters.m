@@ -6,21 +6,8 @@ function [ B ] = findLetters( imagen )
 %               B.Centroid represents the centroid of each bounding box
 figure; imshow(imagen);
 
-%% TODO: Segment image based on gradient or based on cells or both (improve segmentation)
-%% Convert to gray scale
-if size(imagen,3)==3 %RGB image
-    imagen=rgb2gray(imagen);
-end
-%% Convert to binary image
-threshold = graythresh(imagen);
-imagen =~im2bw(imagen,threshold);
-%% Remove all object containing fewer than 30 pixels
-imagen = bwareaopen(imagen,30);
-pause(1)
-%% Show image binary image
-figure(2)
-imshow(~imagen);
-title('INPUT IMAGE WITHOUT NOISE')
+%% Threshold Image into Binary Image
+imagen = thresholdImage(imagen);
 %% Label connected components
 [L Ne]=bwlabel(imagen);
 %% Measure properties of image regions
@@ -38,7 +25,7 @@ for n=1:Ne
     [r,c] = find(L==n);
     n1=imagen(min(r):max(r),min(c):max(c));
     %figure;imshow(~n1);
-    pause(0.5)
+    %pause(0.5)
 end
 
 B =propied;
