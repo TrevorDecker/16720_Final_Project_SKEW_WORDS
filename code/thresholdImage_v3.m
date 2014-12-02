@@ -9,7 +9,7 @@ if size(imagen,3)==3 %RGB image
 %end
 %Convert to binary image
 threshold = graythresh(imagen);
-imagen =~im2bw(imagen,threshold);
+imagen =~im2bw(imagen,threshold+0.05);
 %Remove all object containing fewer than 30 pixels
 imagen = bwareaopen(imagen,30);
 pause(1)
@@ -17,10 +17,11 @@ pause(1)
 figure(2)
 imshow(~imagen);
 title('INPUT IMAGE WITHOUT NOISE')
+final = imagen;
 
 %rem < 30 pixels 
-final = bwareaopen(imagen,30);
-figure;imshow(final, []);
+ final = bwareaopen(imagen,30);
+ figure;imshow(final, []);
 % 
 % img = rgb2gray(I); %to make it grayscale
 % % figure('Name','Original Grayscale');imshow(img);
